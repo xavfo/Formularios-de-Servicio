@@ -150,17 +150,17 @@ $mail = new PHPMailer(true);
 try {
     // Configuración del servidor de correo (ejemplo con Gmail)
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com'; // Cambia esto por tu servidor SMTP
+    $mail->Host       = 'localhost'; // Cambia esto por tu servidor SMTP
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'tu_correo@gmail.com'; // Tu dirección de correo
+    $mail->Username   = 'clientes@qsoftware.biz'; // Tu dirección de correo
     $mail->Password   = 'app_password_aqui';   // Contraseña de aplicación o contraseña real si no usas 2FA
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
     // Remitente y destinatario(s)
-    $mail->setFrom('tu_correo@gmail.com', 'Sistema de Asesoría'); // Debe coincidir con Username generalmente
+    $mail->setFrom('clientes@qsoftware.biz', 'Sistema de Asesoría'); // Debe coincidir con Username generalmente
     $mail->addAddress($correoContacto, $personaContacto); // Destinatario principal
-    $mail->addCC('admin@tuempresa.com'); // Opcional: enviar copia a admin
+    $mail->addCC('xavier.freire@gmail.com'); // Opcional: enviar copia a admin
 
     // Contenido del correo
     $mail->isHTML(true);

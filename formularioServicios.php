@@ -23,19 +23,47 @@ if ($isBlocked) {
     <title>Formulario Servicio de Asesoría</title>
     <!-- Opcional: Incluir Bootstrap o CSS propio para mejorar la apariencia -->
      <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], input[type="email"], input[type="tel"], textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
-        .checkbox-group { display: inline-block; margin-right: 15px; }
-        .checkbox-group label { display: inline; font-weight: normal; }
-        .blocked-message { color: red; font-weight: bold; margin-bottom: 15px; }
-        .submit-btn { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        :root {
+            --brand-color: #2c7be5;
+            --brand-text-color: #ffffff;
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; margin: 0; background: var(--bg); color: #111827; }
+        .brand-header { background: var(--brand-color); color: var(--brand-text-color); }
+        .brand-inner { max-width: 1000px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+        .logo-slot { width: 140px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 8px; }
+        .brand-title { font-size: 20px; font-weight: 700; }
+        .page { max-width: 1000px; margin: 24px auto; padding: 0 24px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); padding: 24px; }
+        h2 { margin-top: 0; font-size: 24px; font-weight: 700; }
+        .section-title { width: 100%; background: var(--brand-color); color: var(--brand-text-color); padding: 10px 14px; border-radius: 8px; font-size: 16px; margin: 24px 0 12px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea, select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; }
+        .checkbox-group { display: inline-flex; align-items: center; gap: 6px; margin-right: 16px; margin-bottom: 8px; }
+        .blocked-message { color: #b91c1c; font-weight: 700; margin-bottom: 15px; }
+        .submit-btn { background-color: var(--brand-color); color: var(--brand-text-color); padding: 12px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
         .submit-btn:disabled { background-color: #cccccc; cursor: not-allowed; }
+        @media (max-width: 640px) {
+            .brand-inner { padding: 14px 18px; }
+            .logo-slot { width: 110px; height: 50px; }
+            .card { padding: 16px; }
+        }
     </style>
 
 </head>
 <body>
+<header class="brand-header">
+    <div class="brand-inner">
+        <div class="logo-slot"></div>
+        <div class="brand-title">Formulario Servicio de Asesoría</div>
+    </div>
+</header>
+<div class="page">
+<div class="card">
 
 <h2>Servicio de Asesoría</h2>
 <p>Le agradecemos por su tiempo al llenar el siguiente formulario que nos proporcionará de información valiosa para poder realizar la propuesta de prestación de servicios de asesoría adecuada a sus necesidades.</p>
@@ -47,7 +75,7 @@ if ($isBlocked) {
 <form id="asesoriaForm" action="enviar_formulario.php" method="POST" <?php if ($isBlocked) echo 'style="display:none;"'; ?>>
     <?php echo $destHiddenField; // Campo oculto con el valor de 'dest' ?>
     
-    <h3>DATOS DE LA EMPRESA</h3>
+    <h3 class="section-title">DATOS DE LA EMPRESA</h3>
     <div class="form-group">
         <label for="nombre_comercial">Nombre Comercial/Razón Social:</label>
         <input type="text" id="nombre_comercial" name="nombre_comercial" required>
@@ -109,7 +137,7 @@ if ($isBlocked) {
         <textarea id="alcance_certificacion" name="alcance_certificacion" rows="3"></textarea>
     </div>
 
-    <h3>SERVICIO REQUERIDO</h3>
+    <h3 class="section-title">SERVICIO REQUERIDO</h3>
     <div class="form-group">
         <div class="checkbox-group">
             <input type="checkbox" id="iso_9001" name="servicios_requeridos[]" value="ISO 9001">
@@ -169,8 +197,12 @@ if ($isBlocked) {
             <label for="otro_servicio">Otro (especifique)</label>
         </div>
     </div>
+    <div class="form-group" id="otro_servicio_contenedor" style="display:none;">
+        <label for="otro_servicio_texto">Especificar otro servicio:</label>
+        <input type="text" id="otro_servicio_texto" name="otro_servicio_texto" placeholder="Detalle del servicio">
+    </div>
 
-    <h3>INFORMACIÓN ADICIONAL</h3>
+    <h3 class="section-title">INFORMACIÓN ADICIONAL</h3>
     <div class="form-group">
         <label for="descripcion_negocio">Breve descripción de su Flujo de proceso o su giro de negocio:</label>
         <textarea id="descripcion_negocio" name="descripcion_negocio" rows="4"></textarea>
@@ -236,7 +268,26 @@ function agregarDepartamento() {
     `;
     container.appendChild(newItem);
 }
+const otroChk = document.getElementById('otro_servicio');
+const otroCont = document.getElementById('otro_servicio_contenedor');
+const otroTxt = document.getElementById('otro_servicio_texto');
+if (otroChk && otroCont && otroTxt) {
+    const toggleOtro = () => {
+        if (otroChk.checked) {
+            otroCont.style.display = 'block';
+            otroTxt.required = true;
+        } else {
+            otroCont.style.display = 'none';
+            otroTxt.required = false;
+            otroTxt.value = '';
+        }
+    };
+    otroChk.addEventListener('change', toggleOtro);
+    toggleOtro();
+}
 </script>
 
+</div>
+</div>
 </body>
 </html>
