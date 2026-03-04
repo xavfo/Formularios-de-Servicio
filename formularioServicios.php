@@ -11,7 +11,7 @@ $isBlocked = isset($_COOKIE['form_submitted_recently']);
 $blockMessage = '';
 
 if ($isBlocked) {
-    $blockMessage = "El formulario ya fue enviado recientemente. Inténtelo de nuevo en unas 48 horas.";
+    $blockMessage = "Aviso: este formulario ya fue enviado recientemente.";
 }
 ?>
 
@@ -72,7 +72,7 @@ if ($isBlocked) {
     <div class="blocked-message"><?php echo $blockMessage; ?></div>
 <?php endif; ?>
 
-<form id="asesoriaForm" action="enviar_formulario.php" method="POST" <?php if ($isBlocked) echo 'style="display:none;"'; ?>>
+<form id="asesoriaForm" action="enviar_formulario.php" method="POST">
     <?php echo $destHiddenField; // Campo oculto con el valor de 'dest' ?>
     
     <h3 class="section-title">DATOS DE LA EMPRESA</h3>
@@ -239,7 +239,7 @@ if ($isBlocked) {
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Enviar Formulario" class="submit-btn" <?php if ($isBlocked) echo 'disabled'; ?>>
+        <input type="submit" value="Enviar Formulario" class="submit-btn">
     </div>
 </form>
 

@@ -9,12 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Acceso denegado.");
 }
 
-// Verificar si ya se envió recientemente usando la cookie
-if (isset($_COOKIE['form_submitted_recently'])) {
-    http_response_code(429); // Código de estado HTTP para "Too Many Requests"
-    die("El formulario ya fue enviado recientemente. Inténtelo de nuevo en unas 48 horas.");
-}
-
 // Función para sanitizar cadenas
 function sanitizeString($string) {
     return htmlspecialchars(strip_tags(trim($string)), ENT_QUOTES, 'UTF-8');
@@ -143,7 +137,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP; // Opcional, para depuración SMTP
 use PHPMailer\PHPMailer\Exception;
 
-require_once 'vendor/autoloadsegúrate de tener PHPMailer instalado via Composer
+require_once 'vendor/autoload.php'; // Asegúrate de tener PHPMailer instalado via Composer
 
 $mail = new PHPMailer(true);
 
@@ -153,8 +147,7 @@ try {
 
     // Remitente y destinatario(s)
     // El remitente debe ser una dirección válida en tu dominio qsoftware.biz configurada en Plesk
-    $mail->setFrom('notificaciones@qsoftware.biz', 'Sistema de Asesoría QSoftware'); // <-- CAMBIA ESTO SI ES NECESARIO
-    $mail->addAddress($correoContacto, $personaContacto); // Destinatario principal (externo)
+    $mail->setFrom('notificaciones@qsoftware.biz', 'Sistema de Asesoría QSoftware'); // <-- CAMBIA ESTO SI ES    $mail->addAddress($correoContacto, $personaContacto); // Destinatario principal (externo)
     $mail->addCC('xavier.freire@gmail.com'); // Opcional: enviar copia a admin
 
     // Contenido del correo
@@ -181,7 +174,7 @@ try {
     $body .= "<li><strong>Dirección Planta:</strong> " . $direccionPlanta . "</li>";
     $body .= "<li><strong>Ciudad Planta:</strong> " . $ciudadPlanta . "</li>";
     $body .= "<li><strong>Certificaciones Actuales:</strong> " . nl2br(htmlspecialchars($certificaciones, ENT_QUOTES, 'UTF-8')) . "</li>";
-    $body .= "<li><strong>Organismo Certificador:</strong>br(htmlspecialchars($organismoCertificador, ENT_QUOTES, 'UTF-8')) . "</li>";
+    $body .= "<li><strong>Organismo Certificador:</strong> " . nl2br(htmlspecialchars($organismoCertificador, ENT_QUOTES, 'UTF-8')) . "</li>";
     $body .= "<li><strong>Alcance de la Certificación:</strong> " . nl2br(htmlspecialchars($alcanceCertificacion, ENT_QUOTES, 'UTF-8')) . "</li>";
     $body .= "<li><strong>Servicios Requeridos:</strong> " . implode(', ', $serviciosRequeridos) . "</li>";
 
