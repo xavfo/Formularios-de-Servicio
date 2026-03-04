@@ -143,23 +143,18 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP; // Opcional, para depuración SMTP
 use PHPMailer\PHPMailer\Exception;
 
-require_once 'vendor/autoload.php'; // Asegúrate de tener PHPMailer instalado via Composer
+require_once 'vendor/autoloadsegúrate de tener PHPMailer instalado via Composer
 
 $mail = new PHPMailer(true);
 
 try {
-    // Configuración del servidor de correo (ejemplo con Gmail)
-    $mail->isSMTP();
-    $mail->Host       = 'localhost'; // Cambia esto por tu servidor SMTP
-    $mail->SMTPAuth   = true;
-    $mail->Username   = 'clientes@qsoftware.biz'; // Tu dirección de correo
-    $mail->Password   = 'app_password_aqui';   // Contraseña de aplicación o contraseña real si no usas 2FA
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
+    // Configuración para usar mail() del sistema (funciona con relay host)
+    $mail->isMail(); // Indica que se use la función mail() del sistema
 
     // Remitente y destinatario(s)
-    $mail->setFrom('clientes@qsoftware.biz', 'Sistema de Asesoría'); // Debe coincidir con Username generalmente
-    $mail->addAddress($correoContacto, $personaContacto); // Destinatario principal
+    // El remitente debe ser una dirección válida en tu dominio qsoftware.biz configurada en Plesk
+    $mail->setFrom('notificaciones@qsoftware.biz', 'Sistema de Asesoría QSoftware'); // <-- CAMBIA ESTO SI ES NECESARIO
+    $mail->addAddress($correoContacto, $personaContacto); // Destinatario principal (externo)
     $mail->addCC('xavier.freire@gmail.com'); // Opcional: enviar copia a admin
 
     // Contenido del correo
@@ -186,7 +181,7 @@ try {
     $body .= "<li><strong>Dirección Planta:</strong> " . $direccionPlanta . "</li>";
     $body .= "<li><strong>Ciudad Planta:</strong> " . $ciudadPlanta . "</li>";
     $body .= "<li><strong>Certificaciones Actuales:</strong> " . nl2br(htmlspecialchars($certificaciones, ENT_QUOTES, 'UTF-8')) . "</li>";
-    $body .= "<li><strong>Organismo Certificador:</strong> " . nl2br(htmlspecialchars($organismoCertificador, ENT_QUOTES, 'UTF-8')) . "</li>";
+    $body .= "<li><strong>Organismo Certificador:</strong>br(htmlspecialchars($organismoCertificador, ENT_QUOTES, 'UTF-8')) . "</li>";
     $body .= "<li><strong>Alcance de la Certificación:</strong> " . nl2br(htmlspecialchars($alcanceCertificacion, ENT_QUOTES, 'UTF-8')) . "</li>";
     $body .= "<li><strong>Servicios Requeridos:</strong> " . implode(', ', $serviciosRequeridos) . "</li>";
 
@@ -232,6 +227,7 @@ try {
 } catch (Exception $e) {
     // Si falla el envío del correo, loguearlo pero no mostrar el error al usuario
     error_log("Error al enviar correo: " . $mail->ErrorInfo);
+    // Opcional: Registrar el fallo en la DB o enviar alerta interna
     // No es ideal, pero tal vez quieras manejarlo de otra forma
     // die("Hubo un problema al enviar la confirmación por correo. Los datos fueron guardados correctamente.");
 }

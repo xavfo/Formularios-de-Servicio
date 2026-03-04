@@ -58,7 +58,7 @@ if ($isBlocked) {
 <body>
 <header class="brand-header">
     <div class="brand-inner">
-        <div class="logo-slot"></div>
+        <div class="logo-slot"><img src="./img/brmanagement.png" alt="Logo BR Management" style="width: 150px; object-fit: contain;"></div>
         <div class="brand-title">Formulario Servicio de Asesoría</div>
     </div>
 </header>
