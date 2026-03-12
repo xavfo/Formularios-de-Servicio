@@ -1,0 +1,10 @@
+# Logs
+logs/*.log
+logs/*.txt
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Archivos de exportación CSV
+exports/*.csv

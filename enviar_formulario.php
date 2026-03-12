@@ -148,6 +148,7 @@ try {
     // Remitente y destinatario(s)
     // El remitente debe ser una dirección válida en tu dominio qsoftware.biz configurada en Plesk
     $mail->setFrom('notificaciones@qsoftware.biz', 'Sistema de Asesoría QSoftware'); // <-- CAMBIA ESTO SI ES    $mail->addAddress($correoContacto, $personaContacto); // Destinatario principal (externo)
+    $mail->addCC('bettyromo22@gmail.com'); // Opcional: enviar copia a admin
     $mail->addCC('xavier.freire@gmail.com'); // Opcional: enviar copia a admin
 
     // Contenido del correo
